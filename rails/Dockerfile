@@ -8,7 +8,7 @@
 # == Development Image
 #
 # Also used as the base for building assets for prod images.
-FROM ruby:3.2.4-alpine3.19 as devcore
+FROM ruby:3.3.4-alpine3.19 AS devcore
 
 RUN apk --no-cache add --update \
     build-base \
@@ -28,7 +28,7 @@ RUN apk --no-cache add --update \
     vips \
     ffmpeg \
     poppler && \
-    gem install bundler --no-document --force -v '~> 2.4.7'
+    gem install bundler --no-document --force -v '~> 2.7.0'
 
 WORKDIR /tmp
 
@@ -40,7 +40,7 @@ RUN bundle config set --local path /usr/local/bundle && \
 WORKDIR /api
 
 # == Transient step for building assets
-FROM devcore as builder
+FROM devcore AS builder
 
 COPY ./rails /api
 
@@ -51,7 +51,7 @@ RUN bin/rake assets:precompile
 #
 # Start from base Ruby image so we can keep image size slim
 # Final image can be used for online or offline mode.
-FROM ruby:3.2.4-alpine3.19 as prod
+FROM ruby:3.3.4-alpine3.19 AS prod
 
 EXPOSE 3000
 
@@ -70,7 +70,7 @@ RUN apk --no-cache add \
     vips \
     ffmpeg \
     poppler && \
-    gem install bundler --no-document --force
+    gem install bundler --no-document --force -v '~> 2.7.0'
 
 # Set deployment to true, bundled to vendor/bundle
 RUN bundle config set deployment 'true'
