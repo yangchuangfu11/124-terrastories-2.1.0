@@ -1,0 +1,222 @@
+#!/usr/bin/env node
+
+const fs = require("fs");
+const os = require("os");
+const path = require("path");
+const readline = require("readline");
+const { spawnSync } = require("child_process");
+
+async function main() {
+  const projectRoot = path.resolve(__dirname, "..");
+  const envPath = path.join(projectRoot, ".env");
+  const envExamplePath = path.join(projectRoot, ".env.example");
+
+  const environment = await singleSelect("Select configuration target", [
+    { value: "local", label: "Local (.env file)" },
+    { value: "heroku", label: "Heroku app" }
+  ]);
+
+  let herokuApp = null;
+
+  if (environment.value === "heroku") {
+    ensureHerokuCLI();
+    herokuApp = await promptInput("Enter Heroku app name", { required: true });
+  }
+
+  const provider = await singleSelect("Select map provider", [
+    { value: "protomaps", label: "Protomaps Hosted Maps" },
+    { value: "mapbox", label: "Mapbox" },
+    { value: "tileserver", label: "Custom Tileserver URL" }
+  ]);
+
+  const updates = {};
+  const resetKeys = [
+    "PROTOMAPS_API_KEY",
+    "MAPBOX_ACCESS_TOKEN",
+    "MAPBOX_STYLE",
+    "TILESERVER_URL"
+  ];
+
+  if (provider.value === "protomaps") {
+    const apiKey = await promptInput("Enter Protomaps API key", { required: true });
+    updates.PROTOMAPS_API_KEY = apiKey;
+  } else if (provider.value === "mapbox") {
+    updates.MAPBOX_ACCESS_TOKEN = await promptInput("Enter Mapbox access token", {
+      required: true
+    });
+    const style = await promptInput("Enter Mapbox style (optional)", {
+      required: false,
+      defaultValue: "mapbox://styles/mapbox/streets-v11"
+    });
+    if (style) {
+      updates.MAPBOX_STYLE = style;
+    }
+  } else {
+    updates.TILESERVER_URL = await promptInput("Enter Tileserver style URL", {
+      required: true
+    });
+  }
+
+  if (environment.value === "heroku") {
+    applyHerokuConfig(herokuApp, updates, resetKeys);
+  } else {
+    ensureLocalEnvFile(envPath, envExamplePath);
+    updateEnvFile(envPath, updates, resetKeys);
+  }
+
+  console.log("\nConfiguration saved successfully.");
+}
+
+async function singleSelect(prompt, options) {
+  return new Promise((resolve) => {
+    const stdin = process.stdin;
+    const stdout = process.stdout;
+    let index = 0;
+    const total = options.length;
+
+    stdout.write(`${prompt}\n`);
+    stdin.setRawMode(true);
+    stdin.resume();
+    stdin.setEncoding("utf8");
+    stdout.write("\u001b[?25l");
+
+    const draw = () => {
+      for (let i = 0; i < total; i += 1) {
+        const option = options[i];
+        const prefix = i === index ? "❯ " : "  ";
+        const label = option.label || option.value;
+        const line = i === index ? `\u001b[36m${prefix}${label}\u001b[0m` : `${prefix}${label}`;
+        stdout.write(`\u001b[2K\r${line}\n`);
+      }
+      stdout.write(`\u001b[${total}A`);
+    };
+
+    const onData = (key) => {
+      if (key === "\u0003") {
+        cleanup();
+        process.exit(1);
+      } else if (key === "\r" || key === "\n") {
+        const choice = options[index];
+        stdout.write(`\u001b[${total}B`);
+        stdout.write("\u001b[2K\r");
+        stdout.write(`Selected: ${choice.label || choice.value}\n`);
+        cleanup();
+        resolve(choice);
+      } else if (key === "\u001b[A") {
+        index = (index - 1 + total) % total;
+        draw();
+      } else if (key === "\u001b[B") {
+        index = (index + 1) % total;
+        draw();
+      }
+    };
+
+    const cleanup = () => {
+      stdin.setRawMode(false);
+      stdin.pause();
+      stdin.removeListener("data", onData);
+      stdout.write("\u001b[?25h");
+    };
+
+    stdin.on("data", onData);
+    draw();
+  });
+}
+
+async function promptInput(prompt, options = {}) {
+  const { required = false, defaultValue } = options;
+
+  const ask = (resolve) => {
+    const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
+    const suffix = defaultValue ? ` [${defaultValue}]` : "";
+    rl.question(`${prompt}${suffix}: `, (answer) => {
+      rl.close();
+      const value = answer.trim() || defaultValue || "";
+      if (required && !value) {
+        console.log("Value is required.\n");
+        ask(resolve);
+        return;
+      }
+      resolve(value.trim());
+    });
+  };
+
+  return new Promise((resolve) => ask(resolve));
+}
+
+function ensureLocalEnvFile(envPath, examplePath) {
+  if (fs.existsSync(envPath)) {
+    return;
+  }
+  if (fs.existsSync(examplePath)) {
+    fs.copyFileSync(examplePath, envPath);
+    console.log("Created .env from .env.example");
+  } else {
+    fs.writeFileSync(envPath, "", "utf8");
+    console.log("Created empty .env file");
+  }
+}
+
+function updateEnvFile(envPath, updates, resetKeys) {
+  const clearSet = new Set(resetKeys.filter((key) => !Object.prototype.hasOwnProperty.call(updates, key)));
+  const seen = new Set();
+  const content = fs.existsSync(envPath) ? fs.readFileSync(envPath, "utf8") : "";
+  const lines = content.split(/\r?\n/);
+  const result = [];
+
+  for (const line of lines) {
+    const match = line.match(/^([A-Z0-9_]+)=/);
+    if (!match) {
+      result.push(line);
+      continue;
+    }
+
+    const key = match[1];
+    if (Object.prototype.hasOwnProperty.call(updates, key)) {
+      result.push(`${key}=${updates[key]}`);
+      seen.add(key);
+    } else if (!clearSet.has(key)) {
+      result.push(line);
+    }
+  }
+
+  for (const [key, value] of Object.entries(updates)) {
+    if (!seen.has(key)) {
+      result.push(`${key}=${value}`);
+    }
+  }
+
+  const filtered = result.filter((line, index, arr) => line !== "" || index !== arr.length - 1);
+  const finalContent = filtered.join(os.EOL).replace(/\s*$/, "") + os.EOL;
+  fs.writeFileSync(envPath, finalContent, "utf8");
+  console.log(`Updated ${path.relative(process.cwd(), envPath)}`);
+}
+
+function applyHerokuConfig(app, updates, resetKeys) {
+  const setArgs = ["config:set", ...Object.entries(updates).map(([key, value]) => `${key}=${value}`), "-a", app];
+  const setResult = spawnSync("heroku", setArgs, { stdio: "inherit" });
+  if (setResult.error || setResult.status !== 0) {
+    throw new Error("Failed to apply Heroku config values");
+  }
+
+  const unsetKeys = resetKeys.filter((key) => !Object.prototype.hasOwnProperty.call(updates, key));
+  if (unsetKeys.length > 0) {
+    const unsetArgs = ["config:unset", ...unsetKeys, "-a", app];
+    const unsetResult = spawnSync("heroku", unsetArgs, { stdio: "inherit" });
+    if (unsetResult.error || unsetResult.status !== 0) {
+      throw new Error("Failed to unset Heroku config values");
+    }
+  }
+}
+
+function ensureHerokuCLI() {
+  const result = spawnSync("heroku", ["--version"], { stdio: "ignore" });
+  if (result.error || result.status !== 0) {
+    throw new Error("Heroku CLI is required but was not found in PATH");
+  }
+}
+
+main().catch((error) => {
+  console.error(`\nError: ${error.message}`);
+  process.exit(1);
+});

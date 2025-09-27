@@ -10,8 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_04_10_210545) do
-
+ActiveRecord::Schema[7.1].define(version: 2024_04_10_210545) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -20,7 +19,7 @@ ActiveRecord::Schema.define(version: 2024_04_10_210545) do
     t.string "record_type", null: false
     t.bigint "record_id", null: false
     t.bigint "blob_id", null: false
-    t.datetime "created_at", null: false
+    t.datetime "created_at", precision: nil, null: false
     t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
     t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
   end
@@ -32,7 +31,7 @@ ActiveRecord::Schema.define(version: 2024_04_10_210545) do
     t.text "metadata"
     t.bigint "byte_size", null: false
     t.string "checksum"
-    t.datetime "created_at", null: false
+    t.datetime "created_at", precision: nil, null: false
     t.string "service_name", null: false
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
@@ -47,10 +46,10 @@ ActiveRecord::Schema.define(version: 2024_04_10_210545) do
     t.string "name"
     t.string "locale"
     t.string "country"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.boolean "beta", default: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.boolean "public", default: false, null: false
+    t.boolean "beta", default: false
     t.string "slug"
     t.text "description"
     t.index ["public"], name: "index_communities_on_public"
@@ -60,8 +59,8 @@ ActiveRecord::Schema.define(version: 2024_04_10_210545) do
   create_table "curriculum_stories", force: :cascade do |t|
     t.bigint "curriculum_id", null: false
     t.bigint "story_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.integer "display_order"
     t.index ["curriculum_id"], name: "index_curriculum_stories_on_curriculum_id"
     t.index ["story_id"], name: "index_curriculum_stories_on_story_id"
@@ -71,16 +70,16 @@ ActiveRecord::Schema.define(version: 2024_04_10_210545) do
     t.string "title"
     t.text "description"
     t.bigint "user_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["user_id"], name: "index_curriculums_on_user_id"
   end
 
   create_table "flipper_features", force: :cascade do |t|
     t.string "key", null: false
     t.text "description"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["key"], name: "index_flipper_features_on_key", unique: true
   end
 
@@ -88,31 +87,31 @@ ActiveRecord::Schema.define(version: 2024_04_10_210545) do
     t.string "feature_key", null: false
     t.string "key", null: false
     t.string "value"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["feature_key", "key", "value"], name: "index_flipper_gates_on_feature_key_and_key_and_value", unique: true
   end
 
   create_table "media", force: :cascade do |t|
     t.bigint "story_id"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["story_id"], name: "index_media_on_story_id"
   end
 
   create_table "media_links", force: :cascade do |t|
     t.string "url"
     t.bigint "story_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["story_id"], name: "index_media_links_on_story_id"
   end
 
   create_table "places", force: :cascade do |t|
     t.string "name"
     t.string "type_of_place"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.decimal "lat", precision: 10, scale: 6
     t.decimal "long", precision: 10, scale: 6
     t.string "region"
@@ -133,9 +132,9 @@ ActiveRecord::Schema.define(version: 2024_04_10_210545) do
 
   create_table "speakers", force: :cascade do |t|
     t.string "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.datetime "birthdate"
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
+    t.datetime "birthdate", precision: nil
     t.integer "birthplace_id"
     t.string "speaker_community"
     t.integer "community_id"
@@ -145,10 +144,10 @@ ActiveRecord::Schema.define(version: 2024_04_10_210545) do
   create_table "stories", force: :cascade do |t|
     t.string "title"
     t.text "desc"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.integer "permission_level"
-    t.datetime "date_interviewed"
+    t.datetime "date_interviewed", precision: nil
     t.string "language"
     t.integer "interview_location_id"
     t.integer "interviewer_id"
@@ -158,8 +157,8 @@ ActiveRecord::Schema.define(version: 2024_04_10_210545) do
 
   create_table "themes", force: :cascade do |t|
     t.boolean "active", default: false, null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "mapbox_style_url"
     t.string "mapbox_access_token"
     t.decimal "center_lat", precision: 10, scale: 6
@@ -182,15 +181,15 @@ ActiveRecord::Schema.define(version: 2024_04_10_210545) do
     t.string "email"
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
-    t.datetime "reset_password_sent_at"
-    t.datetime "remember_created_at"
+    t.datetime "reset_password_sent_at", precision: nil
+    t.datetime "remember_created_at", precision: nil
     t.integer "sign_in_count", default: 0, null: false
-    t.datetime "current_sign_in_at"
-    t.datetime "last_sign_in_at"
+    t.datetime "current_sign_in_at", precision: nil
+    t.datetime "last_sign_in_at", precision: nil
     t.string "current_sign_in_ip"
     t.string "last_sign_in_ip"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.integer "role"
     t.integer "community_id"
     t.boolean "super_admin", default: false, null: false

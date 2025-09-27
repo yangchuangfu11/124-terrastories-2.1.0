@@ -32,14 +32,15 @@ export function mapStyleLayers(mapStyle, theme = "contrast") {
 // as markers, popups, and navigation controls.
 export async function mapgl(useMaplibre) {
   let lib
+  const loadModule = async (importer) => {
+    const module = await importer();
+    return "Map" in module ? module : (module.default ?? module);
+  };
+
   if (useMaplibre) {
-    await import('maplibre-gl').then(module => {
-      lib = "Map" in module ? module : module.default
-    });
+    lib = await loadModule(() => import('maplibre-gl'));
   } else {
-    await import('mapbox-gl').then(module => {
-      lib = "Map" in module ? module : module.default
-    });
+    lib = await loadModule(() => import('mapbox-gl'));
   }
   return lib
 }

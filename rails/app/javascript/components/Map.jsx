@@ -44,15 +44,17 @@ export default class Map extends Component {
       return;
     }
 
+    const loadModule = (importer) => importer().then((module) => module.default ?? module);
+
     if (this.props.useLocalMapServer) {
-      import('!maplibre-gl').then(module => {
-        this.setState({ mapModule: module.default }, () => {
+      loadModule(() => import('maplibre-gl')).then((mapModule) => {
+        this.setState({ mapModule }, () => {
           this.initializeMap(this.state.mapModule);
         });
       });
     } else {
-      import('!mapbox-gl').then(module => {
-        this.setState({ mapModule: module.default }, () => {
+      loadModule(() => import('mapbox-gl')).then((mapModule) => {
+        this.setState({ mapModule }, () => {
           this.initializeMap(this.state.mapModule);
         });
       });

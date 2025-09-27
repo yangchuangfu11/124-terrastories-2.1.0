@@ -1,11 +1,14 @@
 import React from 'react';
 import { shallow } from 'enzyme';
 import Sort from '../../../app/javascript/components/Sort';
+import * as I18nMock from './__mocks__/I18n.mock';
 
 describe('Sort component', () => {
   beforeEach(() => {
+    I18nMock.t.mockClear();
     global.I18n = {
-      t: jest.fn(),
+      t: I18nMock.t,
+      currentLocale: I18nMock.currentLocale,
     };
   });
 
@@ -29,11 +32,14 @@ describe('Sort component', () => {
   it('Displays correctly', () => {
     const wrapper = shallow(<Sort stories={[corinneStory, rudoStory]} />);
 
-    expect(wrapper).toMatchSnapshot();
+    expect(wrapper.find('.card--nav-sort').text()).toBe('sort_stories in local translation: ');
 
+    const translatedKeys = global.I18n.t.mock.calls.map(call => call[0]);
     sortValues.forEach((sortValue) => {
-      expect(global.I18n.t).toHaveBeenCalledWith(sortValue);
+      expect(translatedKeys).toContain(sortValue);
     });
+
+    expect(wrapper.find('.storiesSort').exists()).toBe(true);
   });
 
   it('Calls handleStoriesChanged on change with expected sort', () => {

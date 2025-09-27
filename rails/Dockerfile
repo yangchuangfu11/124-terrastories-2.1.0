@@ -8,7 +8,7 @@
 # == Development Image
 #
 # Also used as the base for building assets for prod images.
-FROM ruby:3.0-alpine3.16 as devcore
+FROM ruby:3.2.4-alpine3.19 as devcore
 
 RUN apk --no-cache add --update \
     build-base \
@@ -51,7 +51,7 @@ RUN bin/rake assets:precompile
 #
 # Start from base Ruby image so we can keep image size slim
 # Final image can be used for online or offline mode.
-FROM ruby:3.0-alpine3.16 as prod
+FROM ruby:3.2.4-alpine3.19 as prod
 
 EXPOSE 3000
 

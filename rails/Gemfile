@@ -1,9 +1,9 @@
 source 'https://rubygems.org'
 git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 
-ruby '3.0.6'
+ruby '3.2.4'
 
-gem 'rails', '7.0.0'
+gem 'rails', '~> 7.1.3', '>= 7.1.3.4'
 
 # No longer included in rails as of 7.0
 gem "sprockets-rails"
@@ -18,13 +18,13 @@ gem 'rgeo', '~> 2.4.0'
 gem 'rgeo-geojson', '~> 2.1.1'
 
 # Use css_bundling for stylesheets
-gem 'cssbundling-rails', '~> 1.1.2'
+gem 'cssbundling-rails', '~> 1.4.0'
 
 # Use Terser as compressor for JavaScript assets
 gem 'terser', '~> 1.1.8'
 
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-gem 'jbuilder', '~> 2.5'
+gem 'jbuilder', '~> 2.14'
 # Allow Cross Origin requests for API endpoints
 gem 'rack-cors'
 # Use Redis adapter to run Action Cable in production
@@ -33,27 +33,27 @@ gem 'rack-cors'
 gem 'bcrypt', '~> 3.1.7'
 
 # Use pundit for policy based authorization
-gem 'pundit', '~> 2.3.0'
+gem 'pundit', '~> 2.5'
 
 # Internationalization
 gem 'rails-i18n', '~> 7.0.3'
 
 # S3 backed Active Storage
-gem 'aws-sdk-s3', '~> 1.119.0'
+gem 'aws-sdk-s3', '~> 1.199'
 
 # ActiveStorage Validation
-gem 'active_storage_validations', '~> 1.0'
+gem 'active_storage_validations', '~> 3.0'
 
 # Enable Webpack for javascript application code
 gem 'shakapacker', '7.1.0'
 gem 'react-rails', '~> 2.6.2'
 
 # Use ActiveStorage variant
-gem 'image_processing', '~> 1.12.2'
+gem 'image_processing', '~> 1.14.0'
 
 # Use Flipper for feature flags
-gem 'flipper', '~> 0.26.0'
-gem 'flipper-active_record', '~> 0.26.0'
+gem 'flipper', '~> 1.3'
+gem 'flipper-active_record', '~> 1.3'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
