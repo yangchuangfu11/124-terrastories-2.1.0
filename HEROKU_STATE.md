@@ -29,9 +29,11 @@
   - Earliest rollback: 2025-09-27 12:33 UTC
 - `terrastories-staging-pg17` → `DATABASE_URL`
   - Plan: Standard 0
-  - Status: Provisioning (use `heroku pg:wait --app terrastories-staging-pg17`)
-  - PostgreSQL: reported after provisioning completes (expected 17.x)
+  - PostgreSQL: 17.5
+  - Data size: 7.6 MB / 64 GB
+  - Connections: 12 / 200
   - Continuous protection: On
+  - Earliest rollback: 2025-09-27 16:00 UTC
   - Add-on: `postgresql-shaped-20909`
 
 ## Commands Executed (read-only)
