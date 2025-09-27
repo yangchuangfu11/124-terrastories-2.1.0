@@ -13,10 +13,23 @@
         "SharedArrayBuffer": "readonly"
     },
     "parser": "@babel/eslint-parser",
+    "parserOptions": {
+        "requireConfigFile": false,
+        "babelOptions": {
+            "configFile": "./babel.config.js"
+        }
+    },
     "plugins": [
         "react"
     ],
+    "settings": {
+        "react": {
+            "version": "detect"
+        }
+    },
     "rules": {
-        "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }]
+        "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+        "jsx-a11y/media-has-caption": "off",
+        "react/no-danger": "warn"
     }
 }
