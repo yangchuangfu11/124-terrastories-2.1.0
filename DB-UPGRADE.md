@@ -123,6 +123,33 @@ After the local rehearsal is green and dependency work is complete:
 3. Execute the production upgrade with a scheduled window once staging sign-off is complete.
 4. Reference `ROLLBACK-PLAN.md` for managed rollback procedures (snapshots/followers) alongside the local restore playbook.
 
+### Staging PG17 Rehearsal (`terrastories-staging-pg17`)
+
+We provisioned a parallel Heroku app (`terrastories-staging-pg17`) with a fresh Postgres `standard-0` add-on to rehearse the 16 → 17 upgrade path before touching production. Use this sequence to keep the environments in sync:
+
+1. **App scaffolding**
+   - Create app on Heroku-24 stack: `heroku apps:create terrastories-staging-pg17 --region us --stack heroku-24`
+   - Provision database: `heroku addons:create heroku-postgresql:standard-0 --app terrastories-staging-pg17` (defaults to PG 17; confirm with `heroku pg:info`).
+   - Wait for provisioning: `heroku pg:wait --app terrastories-staging-pg17`.
+
+2. **Config & build setup**
+   - Copy non-secret config vars from `terrastories-staging-pg16` (use Heroku Config Sync or run `heroku config --app terrastories-staging-pg16 --shell` locally and apply selectively; do **not** commit secrets).
+   - Add required buildpacks (Node + Ruby) mirroring the PG16 staging app.
+   - Attach to the existing pipeline if desired (`heroku pipelines:connect`).
+
+3. **Data restore**
+   - Capture backup from PG16 staging: `heroku pg:backups:capture --app terrastories-staging-pg16`.
+   - Restore into PG17 app: `heroku pg:backups:restore <backup_url> DATABASE_URL --app terrastories-staging-pg17 --confirm terrastories-staging-pg17`.
+   - Run migrations: `heroku run --app terrastories-staging-pg17 bin/rails db:migrate`.
+
+4. **Validation**
+   - Follow `QA_SCRIPT.md` (includes `SMOKE-TEST-CHECKLIST.md`) against `terrastories-staging-pg17`.
+   - Record results, row counts, and update `HEROKU_STATE.md` with the app’s release/db versions.
+
+5. **Iterate**
+   - Fix any 17-specific regressions uncovered.
+   - Once PG17 staging is green, align cutover steps for production (`terrastories`) using the same backup/restore/QA flow.
+
 ## Validation Checklist
 - [ ] Backups captured and verified (local & Heroku).
 - [ ] Extension list identical post-upgrade.

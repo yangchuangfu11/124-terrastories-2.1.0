@@ -10,6 +10,12 @@
   - Git SHA/deploy: see Release `v14` (`deploy efda64ed`)
   - Add-ons:
     - `heroku-postgresql:standard-0` (`postgresql-flat-20112`)
+- `terrastories-staging-pg17`
+  - Stack: `heroku-24`
+  - Latest release: `v1` (initial scaffold)
+  - Web URL: https://terrastories-staging-pg17-e739fb08cb45.herokuapp.com/
+  - Add-ons:
+    - `heroku-postgresql:standard-0` (`postgresql-shaped-20909`, provisioning in progress)
 
 ## Databases
 
@@ -21,6 +27,12 @@
   - Continuous protection: On
   - Fork/follow: Available
   - Earliest rollback: 2025-09-27 12:33 UTC
+- `terrastories-staging-pg17` → `DATABASE_URL`
+  - Plan: Standard 0
+  - Status: Provisioning (use `heroku pg:wait --app terrastories-staging-pg17`)
+  - PostgreSQL: reported after provisioning completes (expected 17.x)
+  - Continuous protection: On
+  - Add-on: `postgresql-shaped-20909`
 
 ## Commands Executed (read-only)
 
@@ -30,12 +42,21 @@ heroku apps
 
 # App details
 heroku apps:info --app terrastories-staging-pg16
+heroku apps:info --app terrastories-staging-pg17
+
+# Create PG17 staging scaffold
+heroku apps:create terrastories-staging-pg17 --region us --stack heroku-24
 
 # Recent releases (shows deploy origin/hash)
 heroku releases --num 5 --app terrastories-staging-pg16
 
 # Database info
 heroku pg:info --app terrastories-staging-pg16
+heroku pg:info --app terrastories-staging-pg17
+
+# Provision PG17 database
+heroku addons:create heroku-postgresql:standard-0 --app terrastories-staging-pg17
+heroku pg:wait --app terrastories-staging-pg17
 ```
 
 > Note: Ensure you are logged in as the correct Heroku user (`heroku whoami`) before running the commands. Do not capture or store credentials, config vars, or logs containing secrets in this file.
