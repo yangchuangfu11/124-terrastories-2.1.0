@@ -1,10 +1,12 @@
+@use "../core/colors";
+
 .icon {
   display: inline-block;
   max-width: 25px;
   height: 25px;
   vertical-align: middle;
-  fill: $light-gray;
-  stroke: $light-gray;
+  fill: colors.$light-gray;
+  stroke: colors.$light-gray;
 }
 
 .icon-group {
@@ -18,8 +20,8 @@
 }
 
 .playing {
-  fill: $orange;
-  stroke: $orange;
+  fill: colors.$orange;
+  stroke: colors.$orange;
 }
 
 .pin {

@@ -1,5 +1,8 @@
+@use "../core/colors";
+@use "../core/flexbox";
+
 .collection {
-  @include flexbox;
+  @include flexbox.flexbox;
 
   flex-wrap: wrap;
 
@@ -8,19 +11,19 @@
 }
 
 .card {
-  @include flex(1 0 300px);
-  @include flexbox;
+  @include flexbox.flex(1 0 300px);
+  @include flexbox.flexbox;
 
   flex-direction: column;
   justify-content: space-between;
   row-gap: 10px;
-  color: $text-color;
+  color: colors.$text-color;
   text-decoration: none;
 
   max-width: 300px;
 
   border-radius: 5px;
-  box-shadow: 0 0 10px $off-white;
+  box-shadow: 0 0 10px colors.$off-white;
   padding: 1rem;
 
   &--nogap {
@@ -28,16 +31,16 @@
   }
 
   &:hover {
-    box-shadow: 0 0 10px $lighter-gray;
+    box-shadow: 0 0 10px colors.$lighter-gray;
   }
 
   &--narrow {
-    @include flex(1 0 175px);
+    @include flexbox.flex(1 0 175px);
     max-width: 175px;
   }
 
   &--mini {
-    @include flex(1 0 150px);
+    @include flexbox.flex(1 0 150px);
     max-width: 150px;
   }
 

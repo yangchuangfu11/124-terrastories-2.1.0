@@ -1,6 +1,10 @@
+@use "../core/colors";
+@use "../core/flexbox";
+@use "../core/typography";
+
 .filters {
-  @include flexbox;
-  @include ui-font;
+  @include flexbox.flexbox;
+  @include typography.ui-font;
 
   gap: 0.5rem;
   align-items: flex-end;
@@ -14,7 +18,7 @@
   }
 
   input, select {
-    border: 1px solid $lighter-gray;
+    border: 1px solid colors.$lighter-gray;
     max-width: 10rem;
   }
 }

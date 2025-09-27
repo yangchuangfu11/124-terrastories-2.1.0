@@ -1,5 +1,9 @@
+@use "../core/colors";
+@use "../core/flexbox";
+@use "../core/spin";
+
 .with-media-list {
-  @include flexbox;
+  @include flexbox.flexbox;
   gap: 1.5rem;
   margin: 1rem auto 2rem;
   flex-wrap: wrap;
@@ -49,19 +53,19 @@
       max-width: 25px;
 
       &:hover {
-        fill: $dark-red;
+        fill: colors.$dark-red;
       }
     }
   }
 
   &.deleting {
-    background-color: $darker-gray;
+    background-color: colors.$darker-gray;
 
     &::after {
       content: url('loading.png');
       position: absolute;
 
-      @include spinner;
+      @include spin.spinner;
     }
 
     img {
@@ -76,7 +80,7 @@
 
     span.overlay {
       visibility: visible;
-      background-color: $transparent-white;
+      background-color: colors.$transparent-white;
       height: 100%;
       width: 100%;
       position: absolute;
@@ -102,13 +106,13 @@
       bottom: 0;
       width: 100px;
       height: 25px;
-      background-color: $transparent-white;
+      background-color: colors.$transparent-white;
       text-align: center;
-      color: $black;
+      color: colors.$black;
       font-size: small;
 
       &:hover {
-        background-color: $transparent-white-hover;
+        background-color: colors.$transparent-white-hover;
       }
     }
 

@@ -1,3 +1,6 @@
+@use "../core/colors";
+@use "../core/typography";
+
 .onboarding {
   background: url('welcome-bg.jpg') no-repeat center center fixed;
   background-size: cover;
@@ -12,11 +15,11 @@
     margin-bottom: 1rem;
 
     .flash-alert {
-      color: $dark-red;
+      color: colors.$dark-red;
     }
 
     .flash-notice {
-      color: $dark-orange;
+      color: colors.$dark-orange;
     }
   }
 
@@ -29,10 +32,10 @@
   }
 
   &-card {
-    background: $card-background;
+    background: colors.$card-background;
     padding: 2em;
     border-radius: 2rem;
-    color: $blue;
+    color: colors.$blue;
     display: flex;
     flex-direction: column;
     margin-bottom: 40px;
@@ -53,7 +56,7 @@
     }
 
     h1,h2,h3 {
-      border-top: 3px solid $orange;
+      border-top: 3px solid colors.$orange;
       padding-top: 0.3em;
       padding-bottom: 0.2em;
       text-align: center;
@@ -61,7 +64,7 @@
     }
 
     a {
-      color: $green;
+      color: colors.$green;
       text-decoration: none;
       align-self: center;
     }
@@ -79,13 +82,13 @@
       &.required::before {
         content: "*";
         margin-right: 0.25rem;
-        color: $red;
+        color: colors.$red;
       }
     }
 
     input[type=submit], .button {
-      @include ui-font;
-      background-color: $green;
+      @include typography.ui-font;
+      background-color: colors.$green;
       text-transform: uppercase;
       letter-spacing: 0.09rem;
       border-radius: 5px;
@@ -96,14 +99,14 @@
       padding: 1rem;
       width: 15rem;
       margin-top: 0.5rem;
-      color: $white;
+      color: colors.$white;
 
       &:hover {
-        background-color: $blue;
+        background-color: colors.$blue;
       }
 
       &:focus {
-        outline-color: $white;
+        outline-color: colors.$white;
       }
     }
   }

@@ -1,21 +1,23 @@
+@use "../core/flexbox";
+
 .two-columns {
-  @include flexbox;
+  @include flexbox.flexbox;
   flex-direction: column;
   margin-bottom: 1rem;
 }
 
 .two-columns-left {
-  @include flex(1);
-  @include order(1);
+  @include flexbox.flex(1);
+  @include flexbox.order(1);
 }
 
 .two-columns-right {
-  @include flex(1);
-  @include order(2);
+  @include flexbox.flex(1);
+  @include flexbox.order(2);
 }
 
 .two-columns-right.with-images-list {
-  @include flexbox;
+  @include flexbox.flexbox;
   gap: 1rem;
 }
 

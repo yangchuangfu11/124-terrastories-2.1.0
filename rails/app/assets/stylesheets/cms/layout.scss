@@ -1,3 +1,7 @@
+@use "../core/colors";
+@use "../core/flexbox";
+@use "../core/typography";
+
 /* Layout */
 
 /**
@@ -9,20 +13,20 @@ z-indicies:
 **/
 
 .content-wrapper {
-  @include flexbox();
+  @include flexbox.flexbox();
   display: flex;
 }
 
 .content-sidebar {
-  @include flex(0);
-  @include order(1);
+  @include flexbox.flex(0);
+  @include flexbox.order(1);
 
-  @include flexbox();
+  @include flexbox.flexbox();
   flex-direction: column;
   justify-content: space-between;
 
-  background-color: $secondary-background;
-  border-right: 1px solid $off-white;
+  background-color: colors.$secondary-background;
+  border-right: 1px solid colors.$off-white;
 
   min-width: 250px;
 
@@ -39,8 +43,8 @@ z-indicies:
 }
 
 .content-main {
-  @include flex(4);
-  @include order(2);
+  @include flexbox.flex(4);
+  @include flexbox.order(2);
 
   min-width: 600px;
   height: 100vh;
@@ -49,7 +53,7 @@ z-indicies:
 }
 
 .top-bar {
-  @include flexbox;
+  @include flexbox.flexbox;
   justify-content: space-between;
   align-items: stretch;
   // align-content: stretch;
@@ -60,8 +64,8 @@ z-indicies:
   top: 0;
   z-index: 4;
 
-  background-color: $secondary-background;
-  border-bottom: 1px solid $off-white;
+  background-color: colors.$secondary-background;
+  border-bottom: 1px solid colors.$off-white;
 
   .search {
     margin: .5rem 1rem;
@@ -71,13 +75,13 @@ z-indicies:
   }
 
   .super-bar {
-    @include flexbox;
+    @include flexbox.flexbox;
     align-items: center;
     margin-left: 1rem;
   }
 
   .top-nav {
-    @include flexbox;
+    @include flexbox.flexbox;
     align-items: stretch;
 
     img {
@@ -92,25 +96,25 @@ z-indicies:
 
     > a {
       padding: 0.5rem 1rem;
-      background-color: $dark-blue;
-      color: $off-white;
+      background-color: colors.$dark-blue;
+      color: colors.$off-white;
       text-decoration: none;
 
       &:hover {
-        background-color: $blue;
+        background-color: colors.$blue;
       }
     }
   }
 
   input.search__input[type=search] {
     border-radius: 100rem;
-    border: 1px solid $lighter-gray;
+    border: 1px solid colors.$lighter-gray;
     padding: 0.25rem 1.6rem;
     width: 100%;
   }
 
   .search__eyeglass-icon {
-    fill: $light-gray;
+    fill: colors.$light-gray;
     height: 1rem;
     left: 1.5rem;
     position: absolute;
@@ -121,14 +125,14 @@ z-indicies:
 }
 
 .page-heading {
-  background-color: $background;
+  background-color: colors.$background;
   position: sticky;
   top: 2.5rem;
   padding: 0.25rem 1rem;
   z-index: 3;
 
   .columns {
-    @include flexbox;
+    @include flexbox.flexbox;
     justify-content: space-between;
     align-items: center;
     z-index: 3;
@@ -140,7 +144,7 @@ z-indicies:
   }
 
   &.sticky {
-    box-shadow: 0 0 1rem $lighter-gray;
+    box-shadow: 0 0 1rem colors.$lighter-gray;
   }
 }
 
@@ -153,7 +157,7 @@ z-indicies:
 }
 
 .separated {
-  @include ui-font;
+  @include typography.ui-font;
   span:nth-child(n+2) {
     &::before {
       content: " | "

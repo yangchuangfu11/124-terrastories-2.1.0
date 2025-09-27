@@ -1,3 +1,6 @@
+@use "../core/colors";
+@use "../core/media";
+
 .welcome {
   background: no-repeat center center fixed;
   background-size: cover;
@@ -17,11 +20,11 @@
   }
 
   &-card {
-    background: $card-background;
+    background: colors.$card-background;
     width: 55%;
     padding: 2em;
     border-radius: 5%;
-    color: $blue;
+    color: colors.$blue;
     max-width: 25rem;
     min-height: 20rem;
     display: flex;
@@ -38,7 +41,7 @@
     }
 
     &-user {
-      color: $green;
+      color: colors.$green;
       margin-top: 1rem;
       margin-bottom: 1rem;
       width: 100%;
@@ -48,7 +51,7 @@
           letter-spacing: 0;
         }
         text-decoration: none;
-        color: $green;
+        color: colors.$green;
         text-transform: uppercase;
         letter-spacing: 0.09rem;
         font-family: sans-serif;
@@ -58,13 +61,13 @@
         margin-left: 1rem;
 
         &:hover {
-          color: $blue;
+          color: colors.$blue;
         }
       }
     }
 
     h1 {
-      border-top: 3px solid $orange;
+      border-top: 3px solid colors.$orange;
       padding-top: 0.3em;
       padding-bottom: 0.2em;
       text-align: center;
@@ -72,13 +75,13 @@
     }
 
     a {
-      color: $green;
+      color: colors.$green;
       text-decoration: none;
       align-self: center;
     }
 
     button {
-      background-color: $green;
+      background-color: colors.$green;
       text-transform: uppercase;
       letter-spacing: 0.09rem;
       display: block;
@@ -90,23 +93,23 @@
       padding: 1rem;
       width: 15rem;
       margin-top: 0.5rem;
-      color: $white;
+      color: colors.$white;
 
       &:hover {
-        background-color: $blue;
+        background-color: colors.$blue;
       }
 
       &:focus {
-        outline-color: $white;
+        outline-color: colors.$white;
       }
     }
   }
 
   .language-color:hover {
-    color: $blue;
+    color: colors.$blue;
   }
 
-  @include for-phone-only {
+  @include media.for-phone-only {
     .logo {
       height: 25%;
     }

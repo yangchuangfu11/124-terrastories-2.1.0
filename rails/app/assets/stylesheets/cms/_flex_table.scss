@@ -1,18 +1,22 @@
+@use "../core/colors";
+@use "../core/flexbox";
+@use "../core/typography";
+
 .collection-table {
-  @include ui-font;
+  @include typography.ui-font;
   max-width: 80%;
   .row {
-    @include flexbox;
+    @include flexbox.flexbox;
     flex-wrap: wrap;
     padding: 0;
     align-items: center;
 
     &:hover {
-      background-color: $off-white;
+      background-color: colors.$off-white;
     }
 
   & + .row {
-    border-top: 1px solid $dark-blue;
+    border-top: 1px solid colors.$dark-blue;
   }
   }
 
@@ -21,7 +25,7 @@
   }
 
   .cell {
-    @include flex(1);
+    @include flexbox.flex(1);
     flex-grow: 1;
     overflow: hidden;
     width: 100%;

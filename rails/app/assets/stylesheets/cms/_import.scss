@@ -1,9 +1,12 @@
+@use "../core/colors";
+@use "../core/typography";
+
 .import {
   input[type=submit] {
     margin-top: 1rem;
     display: block;
-    color: $white;
-    background-color: $orange;
+    color: colors.$white;
+    background-color: colors.$orange;
     padding: 0.5rem 1rem;
     border: none;
   }
@@ -21,7 +24,7 @@
   }
 
   table {
-    @include ui-font;
+    @include typography.ui-font;
     font-size: .8rem;
     margin-bottom: 1rem;
 
@@ -30,7 +33,7 @@
     }
 
     td, th {
-      border: 1px solid $off-white;
+      border: 1px solid colors.$off-white;
       padding: 0.25rem 0.25rem;
 
       select {
@@ -41,7 +44,7 @@
 
     span.error_message {
       font-size: .6rem;
-      color: $dark-red;
+      color: colors.$dark-red;
     }
   }
 }

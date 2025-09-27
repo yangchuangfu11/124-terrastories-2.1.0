@@ -1,8 +1,8 @@
-@import "core/reset";
-@import "core/colors";
-@import "core/media";
-@import "core/typography";
+@use "core/reset";
+@use "core/colors";
+@use "core/media";
+@use "core/typography";
 
-@import "features/login";
-@import "features/onboarding";
-@import "features/welcome";
+@use "features/login";
+@use "features/onboarding";
+@use "features/welcome";

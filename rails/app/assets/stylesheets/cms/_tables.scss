@@ -1,11 +1,14 @@
+@use "../core/colors";
+@use "../core/typography";
+
 table {
-  @include ui-font;
+  @include typography.ui-font;
   width: 80%;
 
   thead {
     font-weight: bold;
     text-align: left;
-    border-bottom: 1px solid $dark-blue;
+    border-bottom: 1px solid colors.$dark-blue;
   }
 
   th, td {
@@ -13,6 +16,6 @@ table {
   }
 
   tbody tr:hover {
-    background-color: $off-white;
+    background-color: colors.$off-white;
   }
 }

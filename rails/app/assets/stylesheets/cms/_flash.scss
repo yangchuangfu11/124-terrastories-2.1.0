@@ -1,3 +1,7 @@
+@use "sass:color";
+@use "../core/colors";
+@use "../core/typography";
+
 div.flash-messages {
   position: absolute;
   width: 100%;
@@ -6,23 +10,23 @@ div.flash-messages {
 }
 
 span.flash {
-  @include ui-font;
+  @include typography.ui-font;
 
-  background-color: lighten($green, 40%);
+  background-color: color.adjust(colors.$green, $lightness: 40%);
   padding: 1rem;
   margin: 1rem;
-  border: 1px solid $dark-green;
+  border: 1px solid colors.$dark-green;
   opacity: 1;
   z-index: 1000;
 
   max-width: 30vw;
 
   &.flash-notice {
-    background-color: lighten($dark-blue, 60%);
-    border-color: $dark-blue;
+    background-color: color.adjust(colors.$dark-blue, $lightness: 60%);
+    border-color: colors.$dark-blue;
   }
   &.flash-alert {
-    background-color: lighten($red, 35%);
-    border-color: $dark-red;
+    background-color: color.adjust(colors.$red, $lightness: 35%);
+    border-color: colors.$dark-red;
   }
 }

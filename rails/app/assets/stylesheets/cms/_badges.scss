@@ -1,61 +1,64 @@
+@use "../core/colors";
+@use "../core/typography";
+
 .badge {
-  @include ui-font;
+  @include typography.ui-font;
 
   font-size: .75rem;
   padding: 3px 6px;
   border-radius: 6px;
-  background-color: $dark-blue;
-  color: $white;
+  background-color: colors.$dark-blue;
+  color: colors.$white;
 
   &-red {
-    background-color: $red;
+    background-color: colors.$red;
   }
 
   &-orange {
-    background-color: $orange;
+    background-color: colors.$orange;
   }
 
   &-yellow {
-    background-color: $yellow;
+    background-color: colors.$yellow;
   }
 
   &-green {
-    background-color: $green;
+    background-color: colors.$green;
   }
 
   &-blue {
-    background-color: $blue;
+    background-color: colors.$blue;
   }
 
   &__state {
     display: inline-block;
 
     &-on {
-      background-color: $green;
+      background-color: colors.$green;
     }
 
     &-conditional {
-      background-color: $yellow;
+      background-color: colors.$yellow;
     }
 
     &-off {
-      background-color: $red;
+      background-color: colors.$red;
     }
 
     &-disabled {
-      background-color: $light-gray;
+      background-color: colors.$light-gray;
     }
 
     &-group {
-      background-color: $blue;
+      background-color: colors.$blue;
     }
 
     &-community {
-      background-color: $orange;
+      background-color: colors.$orange;
     }
 
     &-all {
-      background-color: $green;
+      background-color: colors.$green;
     }
   }
 }
