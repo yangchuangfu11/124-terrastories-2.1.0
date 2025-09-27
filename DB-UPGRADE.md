@@ -133,7 +133,8 @@ We provisioned a parallel Heroku app (`terrastories-staging-pg17`) with a fresh 
    - Wait for provisioning: `heroku pg:wait --app terrastories-staging-pg17`.
 
 2. **Config & build setup**
-   - Copy non-secret config vars from `terrastories-staging-pg16` (use Heroku Config Sync or run `heroku config --app terrastories-staging-pg16 --shell` locally and apply selectively; do **not** commit secrets).
+   - Copy required config vars (Mapbox, ActiveStorage/AWS, Rails secrets, feature flags) from `terrastories-staging-pg16` using a local script that reads `heroku config --app terrastories-staging-pg16 --json` and calls `heroku config:set ... --app terrastories-staging-pg17` (avoid printing raw values to logs). Exclude `DATABASE_URL` and update `HOST_HOSTNAME` to the new app domain.
+   - After copying, verify key presence with `heroku config --app terrastories-staging-pg17 --json` (checking for required keys) and sanity-check ActiveStorage using `heroku run --app terrastories-staging-pg17 bin/rails runner "puts ActiveStorage::Blob.service.bucket.name"`.
    - Add required buildpacks (Node + Ruby) mirroring the PG16 staging app.
    - Attach to the existing pipeline if desired (`heroku pipelines:connect`).
 
@@ -144,6 +145,7 @@ We provisioned a parallel Heroku app (`terrastories-staging-pg17`) with a fresh 
 
 4. **Validation**
    - Follow `QA_SCRIPT.md` (includes `SMOKE-TEST-CHECKLIST.md`) against `terrastories-staging-pg17`.
+   - Re-run `bin/rails db:migrate` on the new app after the slug promotion to ensure schema alignment.
    - Record results, row counts, and update `HEROKU_STATE.md` with the app’s release/db versions.
 
 5. **Iterate**

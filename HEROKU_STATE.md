@@ -12,10 +12,10 @@
     - `heroku-postgresql:standard-0` (`postgresql-flat-20112`)
 - `terrastories-staging-pg17`
   - Stack: `heroku-24`
-  - Latest release: `v1` (initial scaffold)
+  - Latest release: `v21` (config synced from pg16 + Rails secrets)
   - Web URL: https://terrastories-staging-pg17-e739fb08cb45.herokuapp.com/
   - Add-ons:
-    - `heroku-postgresql:standard-0` (`postgresql-shaped-20909`, provisioning in progress)
+    - `heroku-postgresql:standard-0` (`postgresql-shaped-20909`)
 
 ## Databases
 
@@ -59,6 +59,12 @@ heroku pg:info --app terrastories-staging-pg17
 # Provision PG17 database
 heroku addons:create heroku-postgresql:standard-0 --app terrastories-staging-pg17
 heroku pg:wait --app terrastories-staging-pg17
+
+# Sync config (example Python helper)
+python3 scripts/copy_config.py
+
+# Verify ActiveStorage target bucket
+heroku run --app terrastories-staging-pg17 bin/rails runner "puts ActiveStorage::Blob.service.bucket.name"
 ```
 
 > Note: Ensure you are logged in as the correct Heroku user (`heroku whoami`) before running the commands. Do not capture or store credentials, config vars, or logs containing secrets in this file.
