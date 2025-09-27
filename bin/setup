@@ -1,5 +1,32 @@
 #!/bin/bash
-set -eu
+set -euo pipefail
+
+if [ -f "/.dockerenv" ]; then
+  echo "== Running Terrastories setup inside container =="
+
+  if ! bundle check >/dev/null 2>&1; then
+    echo "Installing Ruby gems…"
+    bundle install
+  else
+    echo "Ruby gems already installed."
+  fi
+
+  if [ -f package.json ]; then
+    echo "Installing Node packages…"
+    yarn install --frozen-lockfile
+  fi
+
+  echo "Preparing database…"
+  bin/rails db:prepare
+
+  echo "Clearing logs and temp files…"
+  bin/rails log:clear tmp:clear
+
+  echo "Restarting application…"
+  bin/rails restart
+
+  exit 0
+fi
 
 profile="dev"
 container="web"
@@ -128,9 +155,26 @@ echo
 echo "You may manage your hostname at any time in your .env file."
 
 echo "Configuring and setting up your server…"
+services_to_build=("web" "test")
+if [ "$container" = "localweb" ]; then
+  services_to_build+=("localweb")
+fi
 
-## pull images
-docker compose pull --include-deps --quiet web
+echo
+echo -e "${Purple}==> Building core development image${ColorOff}"
+docker build --pull --target devcore -t terrastories/devcore:latest -f rails/Dockerfile .
+
+echo
+echo -e "${Purple}==> Ensuring auxiliary images are available${ColorOff}"
+docker compose build --pull "${services_to_build[@]}" >/dev/null 2>&1 || true
+
+echo
+echo -e "${Purple}==> Pulling dependent images${ColorOff}"
+if [ "$container" = "web" ]; then
+  docker compose pull --quiet db
+else
+  docker compose --profile "$profile" pull --include-deps --quiet "$container"
+fi
 
 ## init db
 docker compose run --rm db postgres --version
@@ -142,13 +186,15 @@ docker compose up -d db
 if [[ "$profile" = "dev" ]]; then
   ## Install dependencies
   echo "Installing dependencies…"
-  docker compose run --rm $container yarn
-  docker compose run --rm $container bundle
+  docker compose run --rm "$container" sh -lc "bundle check || bundle install"
+  docker compose run --rm "$container" sh -lc 'HUSKY_SKIP_INSTALL=1 yarn install --frozen-lockfile'
+
+  git config core.hooksPath .husky
 
   ## Setup database
   echo "Setting up database…"
-  docker compose run --rm $container bin/rails db:migrate
-  docker compose run --rm $container bin/rails db:seed
+  docker compose run --rm "$container" bin/rails db:prepare
+  docker compose run --rm "$container" bin/rails db:seed
 fi
 
 ## Setup offline
