@@ -1,17 +1,17 @@
 hi:
   community: समुदाय
-  communities: समुदायों
+  communities: समुदाय
   media_link: मीडिया लिंक
-  media_links: मीडिया कड़ियाँ
-  places: स्थानों
+  media_links: मीडिया लिंक्स
+  places: स्थान
   place: स्थान
-  speakers: वक्ताओं
+  speakers: वक्तागण
   speaker: वक्ता
   stories: कहानिया
   story: कहानी
   theme: विषय
   users: उपयोगकर्ताओं
-  user: प्रयोक्ता
+  user: उपयोगकर्ता
 
   languages:
     am: अम्हारिक्
@@ -48,7 +48,7 @@ hi:
     question: "terrastory क्या है??"
   language: भाषा
   login: लॉग इन करें
-  logout: लॉग आउट
+  logout: लॉग आउट करें
   most_recent: "अभी हाल में ही"
   no_media: कोई मीडिया उपलब्ध नहीं
   password: पासवर्ड
@@ -57,7 +57,7 @@ hi:
   region: क्षेत्र या स्थान
   remember_me: "मुझे याद रखें"
   reversed_alphabetical: वर्णमाला क्रम उल्टा (Z-A)
-  select_category: "श्रेणी चुनना"
+  select_category: "श्रेणी चुनें"
   select_option: "विकल्प चुनें"
   selected_language: "चयनित"
   sign_up: "साइन अप करें"
