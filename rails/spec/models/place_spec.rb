@@ -19,6 +19,7 @@ RSpec.describe Place, type: :model do
       is_expected.to validate_content_type_of(:name_audio).allowing(
         'audio/mpeg',
         'audio/wav',
+        'audio/x-wav',
         'audio/mp4',
         'audio/m4a',
         'audio/x-m4a',

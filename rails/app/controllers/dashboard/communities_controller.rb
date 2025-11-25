@@ -29,6 +29,11 @@ module Dashboard
         end
       end
 
+      # Safety: never expose Mapbox credentials when the public interface is disabled
+      if !@community.public? && @community.theme&.expose_mapbox_credentials?
+        @community.theme.update(expose_mapbox_credentials: false)
+      end
+
       redirect_to community_settings_path
     end
 

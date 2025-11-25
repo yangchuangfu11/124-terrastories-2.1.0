@@ -8,12 +8,36 @@ es:
       invalid_pitch: el valor debe estar entre 0 y 85
       invalid_bearing: el valor debe estar entre -180 y 180
       invalid_username_format: cannot contain spaces
+      content_type_invalid: "tiene un tipo de contenido no válido"
+      file_size_out_of_range: "el tamaño %{file_size} no está dentro del rango requerido"
+      limit_out_of_range: "el número total está fuera del rango"
+      image_metadata_missing: "no es una imagen válida"
+      dimension_min_inclusion: "debe ser mayor o igual a %{width} x %{height} píxeles."
+      dimension_max_inclusion: "debe ser menor o igual a %{width} x %{height} píxeles."
+      dimension_width_inclusion: "el ancho no está entre %{min} y %{max} píxeles."
+      dimension_height_inclusion: "la altura no está entre %{min} y %{max} píxeles."
+      dimension_width_greater_than_or_equal_to: "el ancho debe ser mayor o igual a %{length} píxeles."
+      dimension_height_greater_than_or_equal_to: "la altura debe ser mayor o igual a %{length} píxeles."
+      dimension_width_less_than_or_equal_to: "el ancho debe ser menor o igual a %{length} píxeles."
+      dimension_height_less_than_or_equal_to: "la altura debe ser menor o igual a %{length} píxeles."
+      dimension_width_equal_to: "el ancho debe ser igual a %{length} píxeles."
+      dimension_height_equal_to: "la altura debe ser igual a %{length} píxeles."
+      aspect_ratio_not_square: "debe ser una imagen cuadrada"
+      aspect_ratio_not_portrait: "debe ser una imagen vertical"
+      aspect_ratio_not_landscape: "debe ser una imagen horizontal"
+      aspect_ratio_is_not: "debe tener una relación de aspecto de %{aspect_ratio}"
+      aspect_ratio_unknown: "tiene una relación de aspecto desconocida"
+      image_not_processable: "no se puede procesar como imagen"
   helpers:
     label:
       visibility: Visibilidad
       community:
+        public: Habilitar interfaz pública
+        beta: Habilitar funciones beta experimentales
         background_img: Imagen de fondo
         sponsor_logos: Logos del patrocinador
+        display_image: Imagen o logotipo a mostrar
+        description: Acerca de tu comunidad
       speaker:
         one: Orador
         name: Nombre
@@ -49,6 +73,9 @@ es:
         mapbox_access_token: Token de acceso a Mapbox asociado al estilo
         mapbox_3d: Activa la vista de terreno 3D para el mapa en línea
         map_projection: Establecer proyección para el mapa
+        expose_mapbox_credentials: Exponer credenciales de Mapbox en la app de Explore
+        protomaps_api_key: Clave API (gratis en protomaps.com)
+        protomaps_basemap_style: Estilo del mapa base
         center_lat: Centro del mapa, latitud
         center_long: Centro del mapa, longitud
         sw_boundary_lat: SW cuadro delimitador, latitud (opcional)
@@ -90,6 +117,7 @@ es:
     models:
       community: Comunidad
       curriculum: Currículo
+      flipper_feature: Función
       user: Usuario
       place: Lugar
       speaker: Orador

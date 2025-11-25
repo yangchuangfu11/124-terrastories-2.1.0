@@ -14,29 +14,39 @@
 # Configure Using Gemfile
 # gem 'pg'
 #
-# default: &default
-#   adapter: postgresql
-#   encoding: unicode
-#   # For details on connection pooling, see Rails configuration guide
-#   # http://guides.rubyonrails.org/configuring.html#database-pooling
-#   pool: <%%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS", 5) %>
+  host: <%= ENV.fetch('DB_HOST', 'db') %>
+  port: <%= ENV.fetch('DB_PORT', 5432) %>
+  username: <%= ENV.fetch('DB_USERNAME', 'postgres') %>
+  password: <%= ENV.fetch('DB_PASSWORD', '') %>
+
+dev_overrides: &dev_overrides
+  host: <%= ENV.fetch('DEV_DB_HOST', ENV['DB_HOST'] || 'db') %>
+  port: <%= ENV.fetch('DEV_DB_PORT', ENV['DB_PORT'] || 5432) %>
+  username: <%= ENV.fetch('DEV_DB_USERNAME', ENV['DB_USERNAME'] || 'postgres') %>
+  password: <%= ENV.fetch('DEV_DB_PASSWORD', ENV['DB_PASSWORD'] || '') %>
+
+test_overrides: &test_overrides
+  host: <%= ENV.fetch('TEST_DB_HOST', ENV['DB_HOST'] || 'db') %>
+  port: <%= ENV.fetch('TEST_DB_PORT', ENV['DB_PORT'] || 5432) %>
+  username: <%= ENV.fetch('TEST_DB_USERNAME', ENV['DB_USERNAME'] || 'postgres') %>
+  password: <%= ENV.fetch('TEST_DB_PASSWORD', ENV['DB_PASSWORD'] || '') %>
 
 development:
-  adapter: postgresql
-  host: db
-  username: postgres
-  password: postgres
-  database: terrastories-dev
+  <<: *default
+  <<: *dev_overrides
+  database: <%= ENV.fetch('DEV_DB_NAME', 'terrastories-dev') %>
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
 # Do not set this db to the same as development or production.
 test:
-  adapter: postgresql
-  host: db
-  username: postgres
-  password: postgres
-  database: terrastories-test
+  <<: *default
+  <<: *test_overrides
+  database: <%= ENV.fetch('TEST_DB_NAME', 'terrastories-test') %>
 
 # As with config/secrets.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is
@@ -61,4 +71,4 @@ production:
   url: <%= ENV['DATABASE_URL'] %>
 
 offline:
-  url: <%= ENV.fetch('DATABASE_URL', 'postgresql://postgres:postgres@db:5432/terrastories-dev') %>
+  url: <%= ENV.fetch('DATABASE_URL', "postgresql://#{ENV.fetch('OFFLINE_DB_USERNAME', 'postgres')}:#{ENV.fetch('OFFLINE_DB_PASSWORD', 'postgres')}@#{ENV.fetch('OFFLINE_DB_HOST', 'db')}:#{ENV.fetch('OFFLINE_DB_PORT', 5432)}/#{ENV.fetch('OFFLINE_DB_NAME', 'terrastories-dev')}") %>

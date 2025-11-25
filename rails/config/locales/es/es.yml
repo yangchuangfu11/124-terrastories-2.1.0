@@ -35,7 +35,9 @@ es:
   close: "Cerrar"
   community_search:
     title: "Busca una comunidad para explorar"
-    coming_soon: "Esta característica estará disponible pronto. Por ahora, solicita por favor una invitación a una comunidad en específico."
+    description: "Ahora puedes buscar y explorar historias comunitarias disponibles públicamente."
+    button_label: "Comenzar a explorar"
+    coming_soon: "Esta característica estará disponible pronto. Por favor solicita una invitación a una comunidad en específico."
   default: "Predeterminado"
   enter: "Ingresar"
   filter_stories: "Filtrar historias"
@@ -62,7 +64,9 @@ es:
   sign_up: "Registrarse"
   sort_stories: "Ordenar las historias"
   speaker: "Orador"
+  speaker_community: "Comunidad del orador"
   topic: "Tema"
+  type_of_place: "Tipo de lugar"
   video_unsupported: Lo sentimos, su navegador no admite videos incrustados.
   welcome: "Bienvenido/a"
   welcome_back: "Bienvenido/a de nuevo"

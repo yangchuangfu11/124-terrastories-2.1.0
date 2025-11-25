@@ -1,4 +1,19 @@
 pt:
+  protomaps_basemap_styles:
+    contrast: Contraste
+    light: Claro
+    dark: Escuro
+    white: Branco
+    grayscale: Tons de cinza
+    black: Preto
+  protomaps_basemap_markers:
+    default: "#3FB1CE"
+    contrast: "#B5C481"
+    light: "#3FB1CE"
+    dark: "#555"
+    white: "#bbb"
+    grayscale: "#999"
+    black: "#666"
   profile: Perfil
   interviewer: Entrevistador/a
   import: Importar
@@ -10,6 +25,9 @@ pt:
     ne_corner: Caixa delimitadora nordeste
     unrestricted_bounds: Permitir caixas delimitadoras irrestritas
     online: Configuração de mapa online
+    mapbox_configuration: Configuração de mapa Mapbox (Opcional)
+    protomaps_configuration: Configuração da API Protomaps (Opcional)
+    expose_mapbox_credentials_hint: O mapa público Explore só exibirá tiles do Mapbox quando expostos.
     settings: Configurações do mapa
     settings_description: Customize as configurações do mapa de sua comunidade
     projection:
@@ -38,7 +56,15 @@ pt:
     theme:
       welcome_screen: Tela de boas-vindas
       background_img: Customize a imagem de fundo da tela inicial de sua comunidade.
+      display_image: O logotipo da sua comunidade ou outra imagem para exibir como imagem pública.
       sponsor_logos: Mostre logos na página de sua comunidade. Pode ser o logo de sua organização ou o logo de um patrocinador. Multiplos logos podem ser adicionados.
+    community:
+      settings: Configurações
+      make_public: Exploração pública da sua comunidade
+      public_link_available: Sua comunidade pública está disponível aqui
+      copy_to_clipboard: Copiar para área de transferência
+      copied_to_clipboard: Copiado
+      public_mapbox_notice_html: "<strong>Dica de segurança:</strong> Quando a interface pública estiver habilitada, defina os domínios permitidos do seu estilo Mapbox para <code>*.terrastories.app</code> no Mapbox Studio."
   search:
     clear: Limpar pesquisa
     label: Pesquisa
@@ -56,6 +82,7 @@ pt:
     no_nested_results: Este %{resource} não contém nenhum %{resources}.
   sort:
     label: Ordenar por
+    direction: Direção da ordenação
     name: alfabética
     created_at: data da criação
     updated_at: data da última atualização

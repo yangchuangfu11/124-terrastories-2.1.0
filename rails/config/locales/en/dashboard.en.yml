@@ -27,6 +27,7 @@ en:
     online: Online Map Configuration
     mapbox_configuration: Mapbox Map Configuration (Optional)
     protomaps_configuration: Protomaps API Configuration (Optional)
+    expose_mapbox_credentials_hint: When this option is selected, any custom Mapbox style you use will also be applied to your Public Explore map.
     settings: Map Settings
     settings_description: Customize your community's map settings.
     projection:
@@ -49,6 +50,7 @@ en:
       public_link_available: Your public community is available here
       copy_to_clipboard: Copy to Clipboard
       copied_to_clipboard: Copied
+      public_mapbox_notice_html: "<strong>Security tip:</strong> When the public interface is enabled, set your Mapbox style’s allowed domains to <code>*.terrastories.app</code> in Mapbox Studio to prevent your key from being used for other purposes."
     headings:
       new_resource: New %{name}
     actions:

@@ -36,6 +36,7 @@ module Dashboard
         :mapbox_style_url,
         :mapbox_access_token,
         :mapbox_3d,
+        :expose_mapbox_credentials,
         :protomaps_api_key,
         :protomaps_basemap_style,
         :center_lat,

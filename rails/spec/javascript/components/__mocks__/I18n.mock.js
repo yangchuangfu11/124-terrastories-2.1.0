@@ -1,3 +1,5 @@
+const locale = "local translation";
+
 let currentLocale = jest.fn().mockImplementation(
     /**
         * Mocks currentLocale getter

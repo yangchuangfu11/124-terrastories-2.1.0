@@ -73,6 +73,23 @@ If you are developing with an online (Mapbox) map, you will need to provide an a
 ### Issues?
 
 Review more granular setup options in the [Setup](documentation/SETUP.md) documentation.
+
+### Playwright end-to-end tests
+
+The Rails app includes Playwright-based E2E checks under `rails/tests/e2e`. Before running them, provide credentials via environment variables or a `.env.playwright` file in the project or `rails/` directories:
+
+```bash
+PLAYWRIGHT_LOGIN_URL=https://example.com/en/login
+PLAYWRIGHT_LOGIN_USERNAME=your_user
+PLAYWRIGHT_LOGIN_PASSWORD=your_password
+```
+
+Or place the same key/value pairs in `.env.playwright` (git-ignored). Run the suite from the Rails directory:
+
+```bash
+cd rails
+npx playwright test tests/e2e
+```
 ## Developing with Terrastories
 
 To find out how to develop with the Terrastories app, read our [developer guide](documentation/DEVELOPMENT.md) and check out our [Developer Community](https://terrastories.app/community/) pages on the Terrastories website.

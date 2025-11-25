@@ -1,4 +1,19 @@
 nl:
+  protomaps_basemap_styles:
+    contrast: Contrast
+    light: Licht
+    dark: Donker
+    white: Wit
+    grayscale: Grijsschaal
+    black: Zwart
+  protomaps_basemap_markers:
+    default: "#3FB1CE"
+    contrast: "#B5C481"
+    light: "#3FB1CE"
+    dark: "#555"
+    white: "#bbb"
+    grayscale: "#999"
+    black: "#666"
   profile: Profiel
   interviewer: Interviewer
   import: Importeer
@@ -10,6 +25,9 @@ nl:
     ne_corner: Noordoost Hoek
     unrestricted_bounds: Onbeperkte grenzen toestaan
     online: Online Kaartconfiguratie
+    mapbox_configuration: Mapbox kaartconfiguratie (optioneel)
+    protomaps_configuration: Protomaps API-configuratie (optioneel)
+    expose_mapbox_credentials_hint: De openbare Explore-kaart toont alleen Mapbox-tiles wanneer de gegevens worden blootgesteld.
     settings: Kaartconfiguratie
     settings_description: Pas de kaartinstellingen van uw community aan.
     projection:
@@ -38,7 +56,15 @@ nl:
     theme:
       welcome_screen: Welkomscherm
       background_img: Pas de achtergrondafbeelding op de bestemmingspagina van uw community aan.
+      display_image: Uw communitylogo of een andere afbeelding om als publieke afbeelding te tonen.
       sponsor_logos: Geef logo's weer op uw communitypagina. Dit kan het logo van uw organisatie zijn, of dat van een projectsponsor. Er kunnen meerdere logo's worden toegevoegd.
+    community:
+      settings: Instellingen
+      make_public: Publieke verkenning van uw gemeenschap
+      public_link_available: Uw publieke gemeenschap is hier beschikbaar
+      copy_to_clipboard: Kopiëren naar klembord
+      copied_to_clipboard: Gekopieerd
+      public_mapbox_notice_html: "<strong>Beveiligingstip:</strong> Wanneer de publieke interface is ingeschakeld, stel dan de toegestane domeinen van uw Mapbox-stijl in op <code>*.terrastories.app</code> in Mapbox Studio."
   search:
     clear: Verwijder
     label: Zoeken
@@ -56,6 +82,7 @@ nl:
     no_nested_results: Deze %{resource} heeft geen %{resources}.
   sort:
     label: "Sorteer op:"
+    direction: Sorteerrichting
     name: alfabetisch
     created_at: datum gecreeërd
     updated_at: datum laatst bijgewerkt

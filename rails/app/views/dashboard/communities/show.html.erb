@@ -67,6 +67,9 @@
     </div>
 
     <% if current_community.public? %>
+      <div class="alert info">
+        <%= t("dashboard.community.public_mapbox_notice_html").html_safe %>
+      </div>
       <div class="copiableText-container">
         <%= t("dashboard.community.public_link_available") %>:
         <div class="copiableText">

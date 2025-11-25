@@ -1,17 +1,24 @@
-import React, { useState } from "react";
+import React from "react";
 import Select from "react-select";
 import PropTypes from "prop-types";
 import { useTranslation } from 'react-i18next';
 
-const Filter = props => {
-  const { t, i18n } = useTranslation();
+const Filter = ({
+  categories,
+  filterCategory,
+  filterItem,
+  handleFilterCategoryChange,
+  handleFilterItemChange,
+  itemOptions,
+}) => {
+  const { t } = useTranslation();
 
   let DEFAULT_CATEGORY_PLACEHOLDER = t("select_category");
   let DEFAULT_ITEM_PLACEHOLDER = t("select_option");
 
-  const handleCategoryChange = option => props.handleFilterCategoryChange(option);
+  const handleCategoryChange = option => handleFilterCategoryChange(option);
 
-  const handleItemChange = option => props.handleFilterItemChange(option);
+  const handleItemChange = option => handleFilterItemChange(option);
 
   const optionsHash = options => {
     return options.map(option => {
@@ -25,39 +32,33 @@ const Filter = props => {
       <Select
         className="categoryFilter"
         classNamePrefix="select"
-        value={optionsHash([props.filterCategory])}
+        value={optionsHash([filterCategory])}
         onChange={handleCategoryChange}
-        isClearable={props.filterCategory !== DEFAULT_CATEGORY_PLACEHOLDER}
+        isClearable={filterCategory !== DEFAULT_CATEGORY_PLACEHOLDER}
         name="filter-categories"
-        options={optionsHash(props.categories)}
+        options={optionsHash(categories)}
       />
       <Select
         className="itemFilter"
         classNamePrefix="select"
-        value={optionsHash([props.filterItem])}
+        value={optionsHash([filterItem])}
         onChange={handleItemChange}
-        isClearable={props.filterItem !== DEFAULT_ITEM_PLACEHOLDER}
+        isClearable={filterItem !== DEFAULT_ITEM_PLACEHOLDER}
         isSearchable={true}
         name="filter-items"
-        options={optionsHash(props.itemOptions)}
+        options={optionsHash(itemOptions)}
       />
     </React.Fragment>
   );
 };
 
 Filter.propTypes = {
-  categories: PropTypes.array,
-  filterMap: PropTypes.object,
-  clearFilteredStories: PropTypes.func,
-  handleFilterCategoryChange: PropTypes.func,
-  handleFilterItemChange: PropTypes.func,
-  itemOptions: PropTypes.array
-};
-
-Filter.defaultProps = {
-  categories: [],
-  filterMap: {},
-  clearFilteredStories: () => {}
+  categories: PropTypes.array.isRequired,
+  filterCategory: PropTypes.string.isRequired,
+  filterItem: PropTypes.string.isRequired,
+  handleFilterCategoryChange: PropTypes.func.isRequired,
+  handleFilterItemChange: PropTypes.func.isRequired,
+  itemOptions: PropTypes.array.isRequired,
 };
 
 export default Filter;

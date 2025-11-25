@@ -44,6 +44,25 @@ RSpec.describe "Manage Community", type: :request do
         expect(community.theme.static_map.attached?).to be false
       end
     end
+
+    context "community is private" do
+      let(:community) { FactoryBot.create(:community, public: false, slug: "slug") }
+      let(:user) { FactoryBot.create(:user, community: community, role: :admin) }
+
+      before do
+        login_as user
+        allow(Flipper).to receive(:enabled?).with(anything, community) { false }
+        allow(Flipper).to receive(:enabled?).with(:public_communities, community) { false }
+      end
+
+      it "resets expose_mapbox_credentials to false when community is not public" do
+        community.theme.update!(expose_mapbox_credentials: true, mapbox_access_token: "pk.test", mapbox_style_url: "mapbox://styles/test")
+
+        patch "/en/member/community", params: { community: { public: false } }
+
+        expect(community.theme.reload.expose_mapbox_credentials).to be(false)
+      end
+    end
   end
 
   # Spec for testing removal of config.active_storage.replace_on_assign_to_many = false

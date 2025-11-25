@@ -8,6 +8,7 @@ capybara-*.html
 /media
 /public/system
 /coverage/
+/test-results/
 /spec/tmp
 *.orig
 rerun.txt

@@ -20,7 +20,7 @@ class Media < ApplicationRecord
       :mpeg, :mp4, :mov, :webm,
       # audio types
       :mp3, :aac, :flac, :mp4a, :wav,
-      'audio/wav', 'audio/m4a', 'audio/x-m4a', 'audio/x-aac', 'audio/x-flac',
+      'audio/wav', 'audio/x-wav', 'audio/mp4', 'audio/m4a', 'audio/x-m4a', 'audio/x-aac', 'audio/x-flac',
     ],
     size: { less_than_or_equal_to: 200.megabytes }
 

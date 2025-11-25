@@ -1,0 +1,21 @@
+nl:
+  onboard:
+    start:
+      welcome: "Welkom bij Terrastories!"
+      introduction:
+        Het lijkt erop dat je Terrastories voor het eerst offline instelt.
+        Deze wizard leidt je door het instellen van je gemeenschap.
+      begin: Beginnen
+    community:
+      show:
+        create: Maak je community
+        name: Naam van de community
+        finish: Configuratie voltooien
+    account:
+      show:
+        create: Maak je beheerdersaccount
+        username: Gebruikersnaam
+        email: E-mail
+        password: Wachtwoord
+        name: Je naam
+        next: Volgende

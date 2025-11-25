@@ -24,6 +24,7 @@ module App
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 6.1
+    config.active_support.cache_format_version = 7.1
 
     # Configuration for the application, engines, and railties goes here.
     #

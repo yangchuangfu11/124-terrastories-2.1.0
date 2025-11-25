@@ -8,9 +8,36 @@ nl:
       invalid_pitch: de waarde moet tussen 0 en 85 zijn
       invalid_bearing: de waarde moet tussen -180 en 180 zijn
       invalid_username_format: cannot contain spaces
+      content_type_invalid: "heeft een ongeldig inhoudstype"
+      file_size_out_of_range: "grootte %{file_size} valt buiten het toegestane bereik"
+      limit_out_of_range: "totaal aantal valt buiten bereik"
+      image_metadata_missing: "is geen geldige afbeelding"
+      dimension_min_inclusion: "moet groter dan of gelijk aan %{width} x %{height} pixels zijn."
+      dimension_max_inclusion: "moet kleiner dan of gelijk aan %{width} x %{height} pixels zijn."
+      dimension_width_inclusion: "breedte valt niet tussen %{min} en %{max} pixels."
+      dimension_height_inclusion: "hoogte valt niet tussen %{min} en %{max} pixels."
+      dimension_width_greater_than_or_equal_to: "breedte moet groter dan of gelijk aan %{length} pixels zijn."
+      dimension_height_greater_than_or_equal_to: "hoogte moet groter dan of gelijk aan %{length} pixels zijn."
+      dimension_width_less_than_or_equal_to: "breedte moet kleiner dan of gelijk aan %{length} pixels zijn."
+      dimension_height_less_than_or_equal_to: "hoogte moet kleiner dan of gelijk aan %{length} pixels zijn."
+      dimension_width_equal_to: "breedte moet gelijk zijn aan %{length} pixels."
+      dimension_height_equal_to: "hoogte moet gelijk zijn aan %{length} pixels."
+      aspect_ratio_not_square: "moet een vierkante afbeelding zijn"
+      aspect_ratio_not_portrait: "moet een staande afbeelding zijn"
+      aspect_ratio_not_landscape: "moet een liggende afbeelding zijn"
+      aspect_ratio_is_not: "moet een beeldverhouding van %{aspect_ratio} hebben"
+      aspect_ratio_unknown: "heeft een onbekende beeldverhouding"
+      image_not_processable: "kan niet als afbeelding worden verwerkt"
   helpers:
     label:
       visibility: Zichtbaarheid
+      community:
+        public: Publieke interface inschakelen
+        beta: Experimentele beta-functies inschakelen
+        background_img: Achtergrondafbeelding
+        sponsor_logos: Sponsorlogo's
+        display_image: Afbeelding of logo weergeven
+        description: Over uw gemeenschap
       speaker:
         one: Spreker
         name: Naam
@@ -46,6 +73,9 @@ nl:
         mapbox_access_token: Mapbox access token associated with the style
         mapbox_3d: Activate 3D Terrain view for online map
         map_projection: Projectie instellen voor kaart
+        expose_mapbox_credentials: Mapbox-gegevens doorgeven aan Explore-app
+        protomaps_api_key: API-sleutel (gratis op protomaps.com)
+        protomaps_basemap_style: Basiskaartstijl
         center_lat: Map center, latitude
         center_long: Map center, longitude
         sw_boundary_lat: SW bounding box, latitude (optional)
@@ -87,6 +117,7 @@ nl:
     models:
       community: Gemeenschap
       curriculum: Curriculum
+      flipper_feature: Functie
       user: Gebruiker
       place: Plaats
       speaker: Spreker

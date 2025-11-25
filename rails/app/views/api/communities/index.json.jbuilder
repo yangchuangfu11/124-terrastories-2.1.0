@@ -14,8 +14,15 @@ envelope(json) do
     end
 
     json.mapConfig do
-      json.mapboxAccessToken community.theme.mapbox_access_token
-      json.mapboxStyle community.theme.mapbox_style
+      map_style = community.theme.map_style_url
+
+      if community.theme.expose_mapbox_credentials?
+        json.mapboxAccessToken community.theme.mapbox_access_token
+        json.mapboxStyle map_style
+      else
+        json.mapboxAccessToken nil
+        json.mapboxStyle(community.theme.use_maplibre? ? map_style : nil)
+      end
       json.mapbox3dEnabled community.theme.mapbox_3d
       json.mapProjection community.theme.map_projection
 

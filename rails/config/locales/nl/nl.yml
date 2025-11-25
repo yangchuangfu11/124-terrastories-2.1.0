@@ -35,6 +35,8 @@ nl:
   close: "Sluit"
   community_search:
     title: "Zoek een community om te verkennen"
+    description: "Je kunt nu zoeken en openbare communityverhalen verkennen."
+    button_label: "Begin met verkennen"
     coming_soon: "Deze functie komt binnenkort. Vraag voor nu een uitnodiging aan voor een specifieke community."
   default: "standaard"
   enter: "Enter Site"
@@ -62,7 +64,9 @@ nl:
   sign_up: "Inschrijven"
   sort_stories: "Sorteer de verhalen"
   speaker: "Spreker"
+  speaker_community: "Gemeenschap van de spreker"
   topic: "Onderwerp"
+  type_of_place: "Soort plek"
   video_unsupported: Sorry, uw browser ondersteunt geen ingesloten video's.
   welcome: "Welkom"
   welcome_back: "Welkom terug"

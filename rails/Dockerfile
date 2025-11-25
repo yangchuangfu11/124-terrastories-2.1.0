@@ -8,34 +8,58 @@
 # == Development Image
 #
 # Also used as the base for building assets for prod images.
-FROM ruby:3.0-alpine3.16 as devcore
+ARG RUBY_BASE_IMAGE="ruby:3.2.4-alpine3.19"
+FROM ${RUBY_BASE_IMAGE} as devcore
 
-RUN apk --no-cache add --update \
-    build-base \
-    linux-headers \
-    less \
-    nodejs \
-    python3 \
-    yarn \
-    tzdata \
-    postgresql-dev \
-    postgresql-client \
-    postgresql \
-    libffi-dev \
-    libxml2-dev \
-    libxslt-dev \
-    libc6-compat \
-    vips \
-    ffmpeg \
-    poppler && \
+RUN if command -v apk >/dev/null; then \
+      apk --no-cache add --update \
+        build-base \
+        linux-headers \
+        less \
+        nodejs \
+        python3 \
+        yarn \
+        tzdata \
+        postgresql-dev \
+        postgresql-client \
+        postgresql \
+        libffi-dev \
+        libxml2-dev \
+        libxslt-dev \
+        libc6-compat \
+        vips \
+        ffmpeg \
+        poppler; \
+    else \
+      apt-get update && \
+      apt-get install -y --no-install-recommends \
+        build-essential \
+        git \
+        less \
+        nodejs \
+        npm \
+        python3 \
+        tzdata \
+        libpq-dev \
+        libffi-dev \
+        libxml2-dev \
+        libxslt1-dev \
+        libvips \
+        ffmpeg \
+        poppler-utils \
+        iproute2 && \
+      npm install -g yarn && \
+      rm -rf /var/lib/apt/lists/*; \
+    fi && \
     gem install bundler --no-document --force -v '~> 2.4.7'
 
 WORKDIR /tmp
 
 COPY rails/Gemfile* /tmp/
 RUN bundle config set --local path /usr/local/bundle && \
+    bundle config set --local retry 5 && \
     bundle config build.nokogiri --use-system-libraries && \
-    bundle install
+    bundle install --retry=5
 
 WORKDIR /api
 
@@ -51,7 +75,8 @@ RUN bin/rake assets:precompile
 #
 # Start from base Ruby image so we can keep image size slim
 # Final image can be used for online or offline mode.
-FROM ruby:3.0-alpine3.16 as prod
+ARG RUBY_BASE_IMAGE
+FROM ${RUBY_BASE_IMAGE} as prod
 
 EXPOSE 3000
 
@@ -59,17 +84,36 @@ ENV RAILS_ENV="production" \
     AUTO_RUN_MIGRATIONS=on \
     DATABASE_URL=""
 
-RUN apk --no-cache add \
-    tzdata \
-    postgresql-client \
-    nodejs \
-    libffi \
-    libxml2 \
-    libxslt \
-    libc6-compat \
-    vips \
-    ffmpeg \
-    poppler && \
+RUN if command -v apk >/dev/null; then \
+      apk --no-cache add \
+        tzdata \
+        postgresql-client \
+        nodejs \
+        libffi \
+        libxml2 \
+        libxslt \
+        libc6-compat \
+        vips \
+        ffmpeg \
+        poppler; \
+    else \
+      apt-get update && \
+      apt-get install -y --no-install-recommends \
+        tzdata \
+        postgresql-client \
+        nodejs \
+        npm \
+        libffi8 \
+        libffi-dev \
+        libxml2 \
+        libxslt1.1 \
+        libvips \
+        ffmpeg \
+        poppler-utils \
+        iproute2 && \
+      npm install -g yarn && \
+      rm -rf /var/lib/apt/lists/*; \
+    fi && \
     gem install bundler --no-document --force
 
 # Set deployment to true, bundled to vendor/bundle

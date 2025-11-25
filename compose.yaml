@@ -28,8 +28,7 @@ services:
     depends_on:
       - db
     ports:
-      - 80:3000   # Intended for use with HOST_HOSTNAME set
-      - 3000:3000 # Standard Rails development
+      - ${HOST_HTTP_PORT:-3000}:3000 # Customize host port without requiring privileged 80
       - 3035:3035 # For Shakapacker/Webpack development server
     expose:
       - "80"

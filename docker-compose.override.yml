@@ -1,0 +1,23 @@
+services:
+  web:
+    build:
+      context: .
+      dockerfile: rails/Dockerfile
+      target: devcore
+      args:
+        RUBY_BASE_IMAGE: ${RUBY_BASE_IMAGE:-ruby:3.2.4-slim}
+    image: terrastories/devcore:local
+    volumes:
+      - log_data:/api/log
+      - tmp_data:/api/tmp
+      - packs_data:/api/public/packs
+    environment:
+      - DB_HOST=db
+      - DB_USERNAME=${DB_USERNAME:-postgres}
+      - DB_PASSWORD=${DB_PASSWORD:-postgres}
+      - RAILS_LOG_TO_STDOUT=${RAILS_LOG_TO_STDOUT:-1}
+
+volumes:
+  log_data:
+  tmp_data:
+  packs_data:

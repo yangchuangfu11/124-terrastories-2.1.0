@@ -166,9 +166,18 @@
           <%= f.label :mapbox_access_token %>
           <%= f.text_field :mapbox_access_token %>
           </div>
-          <div class="input-group">
-          <%= f.check_box :mapbox_3d %>
-          <%= f.label :mapbox_3d %>
+          <div class="side-by-side">
+            <div class="input-group">
+            <%= f.check_box :mapbox_3d %>
+            <%= f.label :mapbox_3d %>
+            </div>
+            <% if current_community.public? %>
+            <div class="input-group">
+            <%= f.check_box :expose_mapbox_credentials %>
+            <%= f.label :expose_mapbox_credentials %>
+            <p class="hint"><%= t("map.expose_mapbox_credentials_hint") %></p>
+            </div>
+            <% end %>
           </div>
         </fieldset>
       </div>

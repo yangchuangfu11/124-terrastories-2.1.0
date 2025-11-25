@@ -12,6 +12,7 @@ nl:
       invalid: "Ongeldig e-mail of wachtwoord."
       invalid_token: "Ongeldig authenticiteit token."
       locked: "Je account is vergrendeld."
+      last_attempt: "Je hebt nog één poging voordat je account wordt vergrendeld."
       not_found_in_database: "Ongeldig e-mail of wachtwoord."
       timeout: "Je sessie is verlopen, log alsjeblieft opnieuw in om verder te gaan."
       unauthenticated: "Meld u aan met een community account."

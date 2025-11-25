@@ -10,7 +10,7 @@ class Place < ApplicationRecord
   validates :name_audio,
     content_type: [
       :mp3, :aac, :flac, :mp4a, :wav,
-      'audio/wav', 'audio/m4a', 'audio/x-m4a', 'audio/x-aac', 'audio/x-flac',
+      'audio/wav', 'audio/x-wav', 'audio/mp4', 'audio/m4a', 'audio/x-m4a', 'audio/x-aac', 'audio/x-flac',
     ],
     size: { less_than_or_equal_to: 10.megabytes }
   validates :lat, numericality: { greater_than_or_equal_to:  -90, less_than_or_equal_to:  90, message: :invalid_latitude }, allow_blank: true

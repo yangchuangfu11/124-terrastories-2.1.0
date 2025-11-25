@@ -1,9 +1,9 @@
-import ReactDOM from "react-dom";
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 import Minimap from "../vendor/mapgl-minimap.js";
 import Popup from "./Popup";
 import { mapStyleLayers } from '../global/protomaps';
+import { createRoot } from "react-dom/client";
 
 import 'mapbox-gl/dist/mapbox-gl.css';
 import 'maplibre-gl/dist/maplibre-gl.css';
@@ -44,15 +44,17 @@ export default class Map extends Component {
       return;
     }
 
+    const loadModule = (importer) => importer().then((module) => module.default ?? module);
+
     if (this.props.useLocalMapServer) {
-      import('!maplibre-gl').then(module => {
-        this.setState({ mapModule: module.default }, () => {
+      loadModule(() => import('maplibre-gl')).then((mapModule) => {
+        this.setState({ mapModule }, () => {
           this.initializeMap(this.state.mapModule);
         });
       });
     } else {
-      import('!mapbox-gl').then(module => {
-        this.setState({ mapModule: module.default }, () => {
+      loadModule(() => import('mapbox-gl')).then((mapModule) => {
+        this.setState({ mapModule }, () => {
           this.initializeMap(this.state.mapModule);
         });
       });
@@ -109,25 +111,23 @@ export default class Map extends Component {
       projection: this.props.mapProjection
     });
 
-    this.map.on("load", () => {
-      // Load map marker images before adding layers
-      this.map.loadImage(this.props.markerImgUrl, (error, image) => {
-        if (error) throw "Error loading marker images: " + error;
+    this.map.on("load", async () => {
+      try {
+        const markerImage = await this.loadMapImage(this.props.markerImgUrl);
         if (!this.map.hasImage('ts-marker')) {
-            this.map.addImage('ts-marker', image);
+          this.map.addImage('ts-marker', markerImage);
         }
 
-        this.map.loadImage(this.props.markerClusterImgUrl, (error, image) => {
-            if (error) throw "Error loading marker images: " + error;
-            if (!this.map.hasImage('ts-marker-cluster')) {
-                this.map.addImage('ts-marker-cluster', image);
-            }
+        const clusterImage = await this.loadMapImage(this.props.markerClusterImgUrl);
+        if (!this.map.hasImage('ts-marker-cluster')) {
+          this.map.addImage('ts-marker-cluster', clusterImage);
+        }
 
-            // After images are loaded, add your data and layers:
-            this.addMapPoints();
-            this.addPlaceMarkerLayers();
-        });
-      });
+        this.addMapPoints();
+        this.addPlaceMarkerLayers();
+      } catch (error) {
+        console.error("Error loading marker images:", error);
+      }
 
       // Add 3d terrain DEM layer if activated
       if(!this.props.useLocalMapServer && this.props.mapbox3d) {
@@ -297,22 +297,20 @@ export default class Map extends Component {
 
   addClusterClickHandler() {
     // Inspect a cluster (zoom in) on click
-    this.map.on("click", "clusters", e => {
+    this.map.on("click", "clusters", async e => {
       const features = this.map.queryRenderedFeatures(e.point, {
         layers: ["clusters"]
       });
       const clusterId = features[0].properties.cluster_id;
-      this.map.getSource(STORY_POINTS_DATA_SOURCE).getClusterExpansionZoom(
-          clusterId,
-          (err, zoom) => {
-            if (err) return;
-
-            this.map.easeTo({
-              center: features[0].geometry.coordinates,
-              zoom: zoom
-            });
-          }
-      );
+      try {
+        const zoom = await this.getClusterExpansionZoom(clusterId);
+        this.map.easeTo({
+          center: features[0].geometry.coordinates,
+          zoom: zoom
+        });
+      } catch (err) {
+        console.error("Error expanding cluster zoom level:", err);
+      }
     });
   }
 
@@ -321,10 +319,16 @@ export default class Map extends Component {
     this.closeActivePopup();
     // create popup node
     const popupNode = document.createElement("div");
-    ReactDOM.render(<Popup feature={feature} onCloseClick={() => {
-      this.props.clearFilteredStories();
-      this.closeActivePopup();
-    }} />, popupNode);
+    const popupRoot = createRoot(popupNode);
+    popupRoot.render(
+      <Popup
+        feature={feature}
+        onCloseClick={() => {
+          this.props.clearFilteredStories();
+          this.closeActivePopup();
+        }}
+      />
+    );
     // set popup on map
     const popup = new this.state.mapGL.Popup({
       offset: 15,
@@ -335,6 +339,13 @@ export default class Map extends Component {
     popup.setLngLat(feature.geometry.coordinates)
     popup.setDOMContent(popupNode)
     popup.addTo(this.map);
+    const unmountPopup = () => {
+      Promise.resolve().then(() => {
+        popupRoot.unmount();
+      });
+    };
+
+    popup.on('close', unmountPopup);
     // Set active popup in state
     this.setState({
       activePopup: popup
@@ -375,6 +386,50 @@ export default class Map extends Component {
     if (this.state.activePopup) {
       this.state.activePopup.remove();
     }
+  }
+
+  loadMapImage(url) {
+    if (!url) {
+      return Promise.reject(new Error("Marker image URL is not defined"));
+    }
+
+    return new Promise((resolve, reject) => {
+      const image = new Image();
+      image.crossOrigin = "anonymous";
+      image.decoding = "async";
+      image.onload = () => resolve(image);
+      image.onerror = () => reject(new Error(`Failed to load marker image: ${url}`));
+      image.src = url;
+    });
+  }
+
+  getClusterExpansionZoom(clusterId) {
+    const source = this.map.getSource(STORY_POINTS_DATA_SOURCE);
+
+    if (!source) {
+      return Promise.reject(new Error("Cluster source is not available"));
+    }
+
+    try {
+      const result = source.getClusterExpansionZoom(clusterId);
+      if (result && typeof result.then === 'function') {
+        return result;
+      }
+    } catch (error) {
+      if (this.props.useLocalMapServer) {
+        return Promise.reject(error);
+      }
+    }
+
+    return new Promise((resolve, reject) => {
+      source.getClusterExpansionZoom(clusterId, (err, zoom) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(zoom);
+        }
+      });
+    });
   }
 
   render() {
