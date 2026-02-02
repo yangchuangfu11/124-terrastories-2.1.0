@@ -55,7 +55,7 @@
     "react-list": "^0.8.15",
     "react-select": "^5.0.0",
     "react_ujs": "^2.6.0",
-    "sass": "^1.58.3",
+    "sass": "^1.97.2",
     "shakapacker": "7.1.0",
     "style-loader": "^3.3.3",
     "terser-webpack-plugin": "5",
